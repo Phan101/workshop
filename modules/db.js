@@ -53,4 +53,3 @@ dbMethods.deleteUser = function(id){
 
 // export dbMethods
 module.exports = dbMethods;
-// comment
