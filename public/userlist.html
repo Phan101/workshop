@@ -15,17 +15,11 @@
 
         let container = document.getElementById("container");
 
-        async function listBlogPosts(){
-            let url = "/blogposts";
+        async function listUsers(){
+            let url = "/users";
 
-            let token = localStorage.getItem("token");
-
-            let cfg = {
-                method: "GET",
-                headers: {"authorization":token}
-            }
             try {
-                let response = await fetch(url, cfg);
+                let response = await fetch(url);
                 let data = await response.json();
 
                 if(response.status !== 200){
@@ -35,24 +29,24 @@
                 container.innerHTML = ""; // delete previous content
 
                 for(let value of data){
-                    let date = new Date(value.date);
+                    //let date = new Date(value.date);
 
-                    let html = "<h2>" + value.heading + "</h2>";
-                    html += "<p>" + date.toLocaleDateString() + "</p>";
-                    html += "<p>" + value.blogtext + "</p><hr>";
+                    let html = "<h2> Username: " + value.username + "</h2>";
+                    html += "<p> User ID: " + value.id + "</p>";
+                    //html += "<p>" + value.blogtext + "</p><hr>";
 
                     let div = document.createElement("div");
                     div.innerHTML = html;
                     container.appendChild(div);
 
-                    // Delete button
+                   /* // Delete button
                     let delbtn = document.createElement("button");
                     delbtn.innerHTML = "Delete";
 
                     delbtn.addEventListener("click", function(evt){
-                        deleteBlogPost(value.id);
+                        deleteUser(value.id);
                     })
-                    div.insertBefore(delbtn, div.lastElementChild);
+                    div.insertBefore(delbtn, div.lastElementChild);*/
                 }
             }
             catch(error){
@@ -60,20 +54,16 @@
             }
         }
 
-        async function deleteBlogPost(blogpostId){
-            let url = "/blogposts";
-            let token = localStorage.getItem("token");
+     /*   async function deleteUser(userID){
+            let url = "/users";
 
             let updata = {
-                id: blogpostId
+                id: userID
             }
 
             let cfg = {
                 method: "DELETE",
-                headers: {
-                    "content-type":"application/json",
-                    "authorization":token
-            },
+                headers: {"content-type":"application/json"},
                 body: JSON.stringify(updata)
             }
 
@@ -84,14 +74,14 @@
                 if(response.status !== 200){
                     throw data.error;
                 }
-                listBlogPosts(); // refresh the list
+                listUsers(); // refresh the list
             }
             catch(error){
                 console.log(error);
             }
-        }
+        }*/
         
-        listBlogPosts();
+        listUsers();
        /* async function sendRequest() {
 
             let url = "/";

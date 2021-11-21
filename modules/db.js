@@ -16,15 +16,39 @@ dbMethods.getAllBlogPosts = function (){
 }
 
 dbMethods.createBlogPost = function (heading, blogtext, userid){
-    let sql = "INSERT INTO blogposts (id, date, heading, blogtext, userid) VALUES(DEFAULT, DEFAULT; $1, $2, $3) returning *";
+    let sql = "INSERT INTO blogposts (id, date, heading, blogtext, userid) VALUES(DEFAULT, DEFAULT, $1, $2, $3) returning *";
     let values = [heading, blogtext, userid];
     return pool.query(sql, values); // return the promise
 }
 
-dbMethods.deleteBlogPost = function(id){
-    let sql = "DELETE FROM blogposts WHERE id = $1 RETURNING *";
-    let values = [id];
+dbMethods.deleteBlogPost = function(id, userid){
+    let sql = "DELETE FROM blogposts WHERE id = $1 AND userid = $2 RETURNING *";
+    let values = [id, userid];
     return pool.query(sql, values); // return the promise
+}
+
+// Database functions to handle users
+dbMethods.getAllUsers = function (){
+    let sql = "SELECT id, username FROM users";
+    return pool.query(sql);
+}
+
+dbMethods.getUser = function (username){
+    let sql = "SELECT * FROM users WHERE username = $1";
+    let values = [username];
+    return pool.query(sql, values);
+}
+
+dbMethods.createUser = function(username, password, salt){
+    let sql = "INSERT INTO users (id, username, password, salt) VALUES(DEFAULT, $1, $2, $3) returning *";
+    let values = [username, password, salt];
+    return pool.query(sql, values);
+}
+
+dbMethods.deleteUser = function(id){
+    let sql = "DELETE FROM users WHERE id = $1 RETURNING *";
+    let values = [id];
+    return pool.query(sql, values);
 }
 
 // export dbMethods
